@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelForge | Premium AI Editing Studio</title>
+    <title>AlphaEdit AI | Premium AI Editing Studio</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         
-        /* फुल-पेज बैकग्राउंड जो धीरे-धीरे पीछे चमकेगा (Glowing Effect) */
         body { 
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
             background-attachment: fixed;
@@ -91,7 +90,6 @@
         .gen-btn { width: 100%; padding: 15px; background: linear-gradient(45deg, #ff007f, #45f3ff); color: white; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; text-shadow: 0 0 5px rgba(0,0,0,0.5); margin-bottom: 15px; }
         .gen-btn:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(69, 243, 255, 0.7); }
         
-        /* नया डाउनलोड बटन स्टाइल - ग्रीन नियॉन ग्लो के साथ */
         .download-btn { display: none; width: 100%; padding: 15px; background: linear-gradient(45deg, #00ff87, #60efff); color: #0b0c10; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px rgba(0, 255, 135, 0.3); }
         .download-btn:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 135, 0.8); }
 
@@ -111,7 +109,7 @@
 <body>
 
     <header>
-        <div class="logo">Pixel<span>Forge AI</span></div>
+        <div class="logo">Alpha<span>Edit AI</span></div>
     </header>
 
     <section class="hero">
@@ -159,7 +157,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 PixelForge Studio. All Rights Reserved.</p>
+        <p>&copy; 2026 AlphaEdit AI Studio. All Rights Reserved.</p>
     </footer>
 
     <script>
@@ -170,7 +168,7 @@
             document.getElementById("promptInput").placeholder = placeholderText;
             document.getElementById("promptInput").value = ""; 
             document.getElementById("outputImage").style.display = "none"; 
-            document.getElementById("downloadBtn").style.display = "none"; // डाउनलोड बटन छुपाएं
+            document.getElementById("downloadBtn").style.display = "none"; 
             document.getElementById("aiWorkspace").scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -187,7 +185,7 @@
 
             loading.style.display = "block";
             image.style.display = "none";
-            downloadBtn.style.display = "none"; // जनरेट होते समय बटन छुपाएं
+            downloadBtn.style.display = "none"; 
 
             var aiUrl = "https://image.pollinations.ai/p/" + encodeURIComponent(prompt) + "?width=800&height=600&seed=" + Math.floor(Math.random() * 99999);
 
@@ -195,19 +193,17 @@
             image.onload = function() {
                 loading.style.display = "none";
                 image.style.display = "block";
-                downloadBtn.style.display = "block"; // फोटो लोड होते ही डाउनलोड बटन दिखाएं
+                downloadBtn.style.display = "block"; 
             };
         }
 
-        // इमेज डाउनलोड करने का नया जादुई फंक्शन
         function downloadAIImage() {
             var image = document.getElementById("outputImage");
             if(image.src) {
-                // एक टेंपरेरी लिंक बनाकर डाउनलोड ट्रिगर करेंगे
                 var link = document.createElement('a');
                 link.href = image.src;
-                link.download = 'PixelForge-AI-Image.jpg';
-                link.target = '_blank'; // नए टैब में खोलने के लिए सेफ साइड
+                link.download = 'AlphaEdit-AI-Image.jpg';
+                link.target = '_blank';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
