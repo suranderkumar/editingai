@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelForge | Premium AI Editing Studio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        /* फुल-पेज बैकग्राउंड जो धीरे-धीरे पीछे चमकेगा (Glowing Effect) */
+        body { 
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background-attachment: fixed;
+            color: #ffffff; 
+            min-height: 100vh;
+            animation: backgroundGlow 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes backgroundGlow {
+            0% { box-shadow: inset 0 0 50px rgba(69, 243, 255, 0.2); }
+            100% { box-shadow: inset 0 0 100px rgba(255, 0, 127, 0.3); }
+        }
+        
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 8%; 
+            background-color: rgba(11, 12, 16, 0.9); 
+            border-bottom: 2px solid #45f3ff; 
+            box-shadow: 0 0 15px rgba(69, 243, 255, 0.4); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            backdrop-filter: blur(10px);
+        }
+        .logo { font-size: 24px; font-weight: bold; color: #45f3ff; text-transform: uppercase; text-shadow: 0 0 10px #45f3ff; }
+        .logo span { color: #ff007f; text-shadow: 0 0 10px #ff007f; }
+        
+        .hero { height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        .hero h1 { font-size: 44px; margin-bottom: 20px; text-transform: uppercase; }
+        .hero h1 span.edit { color: #ff007f; text-shadow: 0 0 20px #ff007f; }
+        .hero h1 span.game { color: #45f3ff; text-shadow: 0 0 20px #45f3ff; }
+        .hero p { color: #c5c6c7; font-size: 18px; }
+        
+        .container { padding: 40px 8%; }
+        .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; text-transform: uppercase; color: #45f3ff; text-shadow: 0 0 15px rgba(69, 243, 255, 0.6); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 50px; }
+        
+        .card { 
+            background-color: rgba(31, 40, 51, 0.8); 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center; 
+            transition: all 0.4s ease; 
+            border: 2px solid rgba(69, 243, 255, 0.3); 
+            box-shadow: 0 0 15px rgba(69, 243, 255, 0.2); 
+            backdrop-filter: blur(5px);
+            cursor: pointer; 
+        }
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: #45f3ff; 
+            box-shadow: 0 0 30px rgba(69, 243, 255, 0.8), inset 0 0 15px rgba(69, 243, 255, 0.3); 
+            background-color: rgba(31, 40, 51, 0.95); 
+        }
+        .card h3 { font-size: 22px; margin-bottom: 15px; color: #45f3ff; text-shadow: 0 0 10px rgba(69, 243, 255, 0.4); }
+        .card p { color: #c5c6c7; font-size: 15px; line-height: 1.6; }
+        
+        .click-hint { margin-top: 15px; display: inline-block; color: #ff007f; font-weight: bold; font-size: 14px; text-shadow: 0 0 8px #ff007f; animation: pulse 1.5s infinite; }
+        
+        .ai-section { 
+            display: none; 
+            background-color: rgba(31, 40, 51, 0.85); 
+            padding: 40px; 
+            border-radius: 15px; 
+            border: 2px solid #ff007f; 
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.6), inset 0 0 15px rgba(255, 0, 127, 0.2); 
+            max-width: 700px; 
+            margin: 30px auto; 
+            text-align: center; 
+            backdrop-filter: blur(5px);
+        }
+        .ai-section h2 { color: #45f3ff; margin-bottom: 10px; text-shadow: 0 0 10px #45f3ff; }
+        .tool-intro { color: #c5c6c7; margin-bottom: 20px; font-size: 15px; }
+        
+        input[type="text"] { width: 100%; padding: 15px; background-color: #0b0c10; border: 1px solid #45f3ff; color: white; font-size: 16px; border-radius: 8px; margin-bottom: 20px; outline: none; transition: 0.3s; }
+        input[type="text"]:focus { box-shadow: 0 0 15px #45f3ff; border-color: #45f3ff; }
+        
+        .gen-btn { width: 100%; padding: 15px; background: linear-gradient(45deg, #ff007f, #45f3ff); color: white; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; text-shadow: 0 0 5px rgba(0,0,0,0.5); margin-bottom: 15px; }
+        .gen-btn:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(69, 243, 255, 0.7); }
+        
+        /* नया डाउनलोड बटन स्टाइल - ग्रीन नियॉन ग्लो के साथ */
+        .download-btn { display: none; width: 100%; padding: 15px; background: linear-gradient(45deg, #00ff87, #60efff); color: #0b0c10; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px rgba(0, 255, 135, 0.3); }
+        .download-btn:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 135, 0.8); }
+
+        .result-box { margin-top: 30px; min-height: 150px; display: flex; justify-content: center; align-items: center; border: 2px dashed #ff007f; border-radius: 8px; background-color: #0b0c10; padding: 10px; box-shadow: inset 0 0 15px rgba(255,0,127,0.2); margin-bottom: 20px; }
+        .result-box img { max-width: 100%; max-height: 400px; border-radius: 8px; display: none; box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); }
+        .loading { display: none; color: #45f3ff; font-weight: bold; font-size: 18px; text-shadow: 0 0 10px #45f3ff; }
+        
+        footer { background-color: rgba(11, 12, 16, 0.95); text-align: center; padding: 30px; border-top: 1px solid #1f2833; color: #666; margin-top: 50px; }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; text-shadow: 0 0 15px #ff007f; }
+            100% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Pixel<span>Forge AI</span></div>
+    </header>
+
+    <section class="hero">
+        <h1>Ultimate Hub for <span class="game">AI</span> & <span class="edit">Creators</span></h1>
+        <p>100% FREE! नीचे दिए गए किसी भी एडिटिंग टूल पर क्लिक करें और जादू देखें।</p>
+    </section>
+
+    <div class="container">
+        <h2 class="section-title">Select AI Tool</h2>
+        
+        <div class="grid">
+            <div class="card" onclick="openAITool('Cinematic Color Grading', 'अपनी फोटो को सिनेमैटिक लुक देने के लिए प्रोम्प्ट लिखें (जैसे: Cinematic portrait, moody lighting, 8k)...')">
+                <h3>Cinematic Color Grading</h3>
+                <p>Advanced color manipulation, deep tones, and Hollywood style filters generated instantly by AI.</p>
+                <span class="click-hint">यह एआई टूल खोलें ↓</span>
+            </div>
+
+            <div class="card" onclick="openAITool('Creative Retouching', 'रिटचिंग और बैकग्राउंड बदलने के लिए प्रोम्प्ट लिखें (जैसे: Studio portrait flawless skin, fantasy background)...')">
+                <h3>Creative Retouching</h3>
+                <p>High-end face retouching, object removal, and professional composition powered by AI intelligence.</p>
+                <span class="click-hint">यह एआई टूल खोलें ↓</span>
+            </div>
+
+            <div class="card" onclick="openAITool('Thumbnail Design', 'यूट्यूब थंबनेल डिज़ाइन करने के लिए प्रोम्प्ट लिखें (जैसे: Gaming youtube thumbnail, neon text, high contrast)...')">
+                <h3>Thumbnail Design</h3>
+                <p>Get high-CTR gaming and lifestyle thumbnails designed automatically to boost your views.</p>
+                <span class="click-hint">यह एआई टूल खोलें ↓</span>
+            </div>
+        </div>
+
+        <div class="ai-section" id="aiWorkspace">
+            <h2 id="toolTitle">AI Tool Name</h2>
+            <p class="tool-intro" id="toolDesc">टूल विवरण...</p>
+            
+            <input type="text" id="promptInput" placeholder="यहाँ अंग्रेजी में लिखें...">
+            <button class="gen-btn" onclick="generateAIImage()">एआई से ऑटो-एडिट करें ✨</button>
+
+            <div class="result-box">
+                <div class="loading" id="loadingText">एआई आपके लिए डिजाइन तैयार कर रहा है, कृपया 5 सेकंड रुकें... ⏳</div>
+                <img id="outputImage" src="" alt="AI Result">
+            </div>
+
+            <button class="download-btn" id="downloadBtn" onclick="downloadAIImage()">डाउनलोड इमेज (Save to Gallery) 📥</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PixelForge Studio. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function openAITool(toolName, placeholderText) {
+            document.getElementById("aiWorkspace").style.display = "block";
+            document.getElementById("toolTitle").innerText = "AI " + toolName;
+            document.getElementById("toolDesc").innerText = "आप इस टूल का फ्री में उपयोग कर रहे हैं। नीचे अपनी पसंद टाइप करें:";
+            document.getElementById("promptInput").placeholder = placeholderText;
+            document.getElementById("promptInput").value = ""; 
+            document.getElementById("outputImage").style.display = "none"; 
+            document.getElementById("downloadBtn").style.display = "none"; // डाउनलोड बटन छुपाएं
+            document.getElementById("aiWorkspace").scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateAIImage() {
+            var prompt = document.getElementById("promptInput").value;
+            var loading = document.getElementById("loadingText");
+            var image = document.getElementById("outputImage");
+            var downloadBtn = document.getElementById("downloadBtn");
+
+            if(prompt.trim() === "") {
+                alert("कृपया पहले BOX में कुछ लिखें!");
+                return;
+            }
+
+            loading.style.display = "block";
+            image.style.display = "none";
+            downloadBtn.style.display = "none"; // जनरेट होते समय बटन छुपाएं
+
+            var aiUrl = "https://image.pollinations.ai/p/" + encodeURIComponent(prompt) + "?width=800&height=600&seed=" + Math.floor(Math.random() * 99999);
+
+            image.src = aiUrl;
+            image.onload = function() {
+                loading.style.display = "none";
+                image.style.display = "block";
+                downloadBtn.style.display = "block"; // फोटो लोड होते ही डाउनलोड बटन दिखाएं
+            };
+        }
+
+        // इमेज डाउनलोड करने का नया जादुई फंक्शन
+        function downloadAIImage() {
+            var image = document.getElementById("outputImage");
+            if(image.src) {
+                // एक टेंपरेरी लिंक बनाकर डाउनलोड ट्रिगर करेंगे
+                var link = document.createElement('a');
+                link.href = image.src;
+                link.download = 'PixelForge-AI-Image.jpg';
+                link.target = '_blank'; // नए टैब में खोलने के लिए सेफ साइड
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    </script>
+
+</body>
+</html>
